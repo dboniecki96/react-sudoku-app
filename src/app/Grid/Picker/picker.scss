@@ -1,0 +1,18 @@
+.picker {
+  position: absolute;
+  display: flex;
+  z-index: 1;
+  background-color: cadetblue;
+  color: azure;
+
+  & * {
+    padding: 20px;
+    font-size: 26px;
+    cursor: pointer;
+
+    &:hover {
+      background-color: azure;
+      color: cadetblue;
+    }
+  }
+}

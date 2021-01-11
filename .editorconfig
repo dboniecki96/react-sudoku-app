@@ -1,0 +1,14 @@
+root = true
+
+[*]
+indent_size = 2
+tab_width = 2
+max_line_length = 120
+
+[{*.tsx, *.ts, *.js}]
+ij_continuation_indent_size = 2
+ij_javascript_align_imports = true
+ij_typescript_align_imports = true
+ij_typescript_indent_chained_calls = true
+ij_typescript_align_multiline_chained_methods = true
+ij_any_keep_blank_lines_in_code = 1
