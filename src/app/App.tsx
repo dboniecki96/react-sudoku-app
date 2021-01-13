@@ -1,11 +1,11 @@
 import Grid       from "./Grid/Grid";
+import {GridType} from './Grid/Grid.model';
 import './app.scss';
-import {RowArray} from "../hooks/useSudoku/useSudoku";
 
 //Copy your set of digits in sampleGrid two-dimensional array
 //Digits are displayed the same as been set in array
 
-const sampleGrid: RowArray[] = [
+export const sampleGrid: GridType = [
   [2, 0, 3, 0, 0, 8, 6, 0, 7],
   [1, 4, 0, 7, 2, 6, 0, 0, 9],
   [5, 0, 7, 1, 3, 9, 4, 2, 8],

@@ -6,39 +6,6 @@
   color: indianred;
 }
 
-.settings {
-  display: flex;
-  height: 46px;
-  padding: 20px;
-  justify-content: center;
-
-  & button {
-    margin: 0 6px;
-    width: 140px;
-    border: none;
-    outline: none;
-    cursor: pointer;
-    font-size: 16px;
-    font-weight: bold;
-
-    &.new-game {
-      background-color: cadetblue;
-      color: azure;
-
-      &:hover {
-        border: 1px solid cadetblue;
-        background-color: azure;
-        color: cadetblue;
-      }
-    }
-
-    &.validate:hover {
-      background-color: darkgray;
-      color: white;
-    }
-  }
-}
-
 .grid-container {
   height: 600px;
   display: flex;

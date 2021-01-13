@@ -1,0 +1,13 @@
+.row {
+  width: 100%;
+  display: flex;
+
+  &:nth-child(3n) {
+    border-bottom: 3px solid cadetblue;
+  }
+
+  .error {
+    background-color: indianred;
+    opacity: 0.8;
+  }
+}

@@ -1,41 +1,32 @@
-import React                 from 'react';
-import {RowArray, useSudoku} from "../../hooks/useSudoku/useSudoku";
-import Row                   from "./Row/Row";
+import React                from 'react';
+import {useGrid} from "./useGrid";
+import Row       from "../Row/Row";
+import Header    from "../Header/Header";
+import {GridProps, RowType} from "./Grid.model";
 import './grid.scss';
-
-interface GridProps {
-  gridData: RowArray[];
-}
 
 const Grid = ({gridData}: GridProps) => {
   const {
-    board, resetGrid, onNumberPick, validateGrid, areSomeErrors, gameOver,
+    grid, resetGrid, onNumberPick, validateGrid, areSomeErrors, gameOver,
     isSuccess, rowErrors, colErrors, tileErrors, insertedNumbers
-  } = useSudoku(gridData);
+  } = useGrid(gridData);
 
-  const gridContainerClassName =
+  const getGridContainerClassName =
     `grid-container ${isSuccess ? 'success' : (rowErrors.length || colErrors.length || tileErrors.length) ? 'error' : ''}`
 
   return !gridData || !gridData.length
-    ? <div className='no-grid'>No data for filling the board, please fill the data</div>
+    ? <div className='no-grid'>No data for filling the grid, please fill the data</div>
     : (
       <React.Fragment>
-        <div className='settings'>
-          <button className='new-game'
-                  onClick={resetGrid}
-          >New game
-          </button>
-          {!gameOver &&
-          <button className='validate'
-                  onClick={() => validateGrid()}>
-            {areSomeErrors || isSuccess ? 'Continue' : 'Validate'}
-          </button>
-          }
-        </div>
-        {gameOver && <div className='game-over'>Game Over</div>}
-        <div className={gridContainerClassName}>
+        <Header resetGrid={resetGrid}
+                validateGrid={validateGrid}
+                areSomeErrors={areSomeErrors}
+                gameOver={gameOver}
+                isSuccess={isSuccess}
+        />
+        <div className={getGridContainerClassName}>
           {
-            board.map((row: RowArray, rowIndex: number) =>
+            grid.map((row: RowType, rowIndex: number) =>
               <Row key={rowIndex}
                    rowIndex={rowIndex}
                    row={row}

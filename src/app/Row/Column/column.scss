@@ -1,0 +1,29 @@
+.column {
+  width: 11%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid cadetblue;
+
+  &:nth-child(3n) {
+    border-right: 3px solid cadetblue;
+  }
+
+  &.inserted {
+    background-color: lightgoldenrodyellow;
+  }
+
+  &.hover:hover {
+    background-color: lightblue;
+    cursor: pointer;
+  }
+
+  .number {
+    font-size: 28px;
+    color: darkslategray;
+
+    &.inserted {
+      font-weight: bold;
+    }
+  }
+}

@@ -1,16 +1,12 @@
 import {useCallback, useEffect, useRef} from "react";
-import {GRID_SIZE}                      from "../../../hooks/useSudoku/sudokuUtils";
-import './picker.scss';
 
-const arr = Array.from(Array(GRID_SIZE).keys());
-
-interface PickerProps {
+export interface PickerProps {
   isVisible?: boolean;
   onNumberPick: (number: number) => void;
   onClosePicker: () => void;
 }
 
-const Picker = ({isVisible, onNumberPick, onClosePicker}: PickerProps) => {
+export const usePicker = ({onClosePicker, isVisible, onNumberPick}: PickerProps) => {
   const pickerRef = useRef<HTMLDivElement>(null);
 
   const clickedOutside = useCallback((event: MouseEvent) => {
@@ -24,16 +20,9 @@ const Picker = ({isVisible, onNumberPick, onClosePicker}: PickerProps) => {
     return () => document.removeEventListener('click', clickedOutside, true)
   }, [clickedOutside, pickerRef]);
 
-  return isVisible ? (
-    <div className='picker'
-         ref={pickerRef}
-    >
-      {arr.map(val => <div key={val}
-                           className='number'
-                           onClick={() => onNumberPick(val + 1)}
-      >{val + 1}</div>)}
-    </div>
-  ) : null;
+  return {
+    isVisible,
+    pickerRef,
+    onNumberPick
+  };
 };
-
-export default Picker;

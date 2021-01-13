@@ -1,16 +1,10 @@
 import {useCallback, useEffect, useState} from "react";
-import {
-  areAllValuesInsertedInBoard,
-  areAllValuesUniqueHorizontally,
-  areAllValuesUniqueInTiles,
-  areAllValuesUniqueVertically,
-  copy2DArray
-}                                         from "./sudokuUtils";
+import {copy2DArray}                      from "../../utils/utils";
+import {GridType}                         from "./Grid.model";
+import {useValidateGrid}                  from "./useValidateGrid";
 
-export type RowArray = (number | null)[];
-
-export const useSudoku = (gridData: RowArray[]) => {
-  const [board, setBoard] = useState<RowArray[]>(copy2DArray(gridData));
+export const useGrid = (gridData: GridType) => {
+  const [grid, setGrid] = useState<GridType>(copy2DArray(gridData));
 
   const [insertedNumbersCoordinates, setInsertedNumbersCoordinates] = useState<number[][]>([]);
 
@@ -20,6 +14,13 @@ export const useSudoku = (gridData: RowArray[]) => {
   const [rowErrors, setRowErrors] = useState<number[]>([]);
   const [colErrors, setColErrors] = useState<number[]>([]);
   const [tileErrors, setTileErrors] = useState<number[]>([]);
+
+  const {
+    areAllValuesInsertedInGrid,
+    areAllValuesUniqueInTiles,
+    areAllValuesUniqueInAllColumns,
+    areAllValuesUniqueInAllRows
+  } = useValidateGrid();
 
   const areSomeErrors: boolean = !!rowErrors.length || !!colErrors.length || !!tileErrors.length;
 
@@ -34,7 +35,7 @@ export const useSudoku = (gridData: RowArray[]) => {
     resetErrors();
     setGameOver(false);
     setInsertedNumbersCoordinates([]);
-    setBoard(copy2DArray(gridData));
+    setGrid(copy2DArray(gridData));
   };
 
   const handleRowError = (rowIndex: number) => setRowErrors(rows => [...rows, rowIndex]);
@@ -44,9 +45,9 @@ export const useSudoku = (gridData: RowArray[]) => {
   const onNumberPick = (
     rowIndex: number, numberIndex: number, pickedNumber: number
   ) => {
-    const boardCopy = copy2DArray(board);
-    boardCopy[rowIndex][numberIndex] = pickedNumber;
-    setBoard(boardCopy);
+    const gridCopy = copy2DArray(grid);
+    gridCopy[rowIndex][numberIndex] = pickedNumber;
+    setGrid(gridCopy);
 
     if (pickedNumber) {
       setInsertedNumbersCoordinates(coordinates => [...coordinates, [rowIndex, numberIndex]]);
@@ -63,19 +64,19 @@ export const useSudoku = (gridData: RowArray[]) => {
       return;
     }
 
-    const horizontallyValid = areAllValuesUniqueHorizontally(board, handleRowError);
-    const verticallyValid = areAllValuesUniqueVertically(board, handleColError);
-    const isBoardValid = areAllValuesUniqueInTiles(board, handleTileError) && horizontallyValid && verticallyValid;
+    const horizontallyValid = areAllValuesUniqueInAllRows(grid, handleRowError);
+    const verticallyValid = areAllValuesUniqueInAllColumns(grid, handleColError);
+    const isGridValid = areAllValuesUniqueInTiles(grid, handleTileError) && horizontallyValid && verticallyValid;
 
-    if (isBoardValid) setIsSuccess(true);
-  }, [board, isSuccess, areSomeErrors]);
+    if (isGridValid) setIsSuccess(true);
+  }, [grid, isSuccess, areSomeErrors, areAllValuesUniqueInAllColumns, areAllValuesUniqueInAllRows, areAllValuesUniqueInTiles]);
 
   useEffect(() => {
-    if (areAllValuesInsertedInBoard(board)) validateGrid(true);
-  }, [validateGrid, board]);
+    if (areAllValuesInsertedInGrid(grid)) validateGrid(true);
+  }, [validateGrid, grid, areAllValuesInsertedInGrid]);
 
   return {
-    board,
+    grid,
     onNumberPick,
     resetGrid,
     validateGrid,
